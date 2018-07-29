@@ -133,6 +133,7 @@ class App extends Component {
  render() {
    return (
      <div className="App">
+     <h2>Upload Files</h2>
        <input
          type="file"
          onChange={this.handleChange}
