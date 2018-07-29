@@ -153,12 +153,19 @@ class App extends Component {
          </div>
        ))}
        </OwlCarousel>
-       <h2>Bar Graph</h2>
-       <BarGraph/>
-       <h2>Line Graph</h2>
-       <LineGraph/>
+      
+       <div class="BarGraph" >
+        <h2>Bar Graph</h2>
+       <BarGraph/></div>
+       <div class="DoughnutGraph" >
        <h2>Doughnut Graph</h2>
-       <DoughnutGraph/>
+       <DoughnutGraph/></div>
+       
+       <div class="LineGraph" >
+       <h2>Line Graph</h2>
+       <LineGraph/></div>
+       
+       
      </div>
    );
  }

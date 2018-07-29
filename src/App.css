@@ -21,7 +21,19 @@
 .App-intro {
   font-size: large;
 }
-
+.BarGraph {
+  position: absolute;
+  right: 20px;
+  width: 800px !important;
+}
+.LineGraph {
+  position: absolute;
+  right: 300px;
+  width: 800px !important;
+}
+.DoughnutGraph {
+  width: 800px !important;
+}
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
