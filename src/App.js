@@ -7,9 +7,14 @@ import 'owl.carousel/dist/assets/owl.theme.default.css';
 import {Bar} from 'react-chartjs-2';
 import {Doughnut} from 'react-chartjs-2';
 import {Line} from 'react-chartjs-2';
+import {generateId} from './utility';
+
+const it = generateId()
+
 const options = {
   items: 4,
 };
+
 
 const BarGraph =(props) => {
   const data = {
@@ -100,9 +105,7 @@ const DoughnutGraph= (props) => {
   );
 
 } 
-const CLOUDINARY_UPLOAD_PRESET = 'iy8iecxj';
-const CLOUDINARY_UPLOAD_URL =
- 'https://api.cloudinary.com/v1_1/your_cloudinary_app_name/upload';
+
 
 class App extends Component {
  state = {
@@ -119,18 +122,38 @@ class App extends Component {
      var reader = new FileReader();
      reader.onload = (e) => {
        // Render thumbnail.
-       this.setState({ uploadedImg: [...this.state.uploadedImg,
+       this.setState(
+        { uploadedImg: [...this.state.uploadedImg,
          {
+           id: it.next().value,
            name: file.name,
            src: e.target.result
-         }]});
+         }],
+         selectedFile: []
+        });
      };
      reader.readAsDataURL(file)
    })
 
  };
 
+ renderCarousel = () => {
+  return this.state.uploadedImg.map(image => {
+    return (
+     <div className="item"  key={image.id}>
+        <img
+          src={image.src}
+          alt={image.name}
+          style={{ height: '100px', width: '200px' }}
+        />
+      </div> 
+    )
+  })
+ }
+
  render() {
+   console.log(this.state.uploadedImg);
+   
    return (
      <div className="App">
      <h2>Upload Files</h2>
@@ -141,27 +164,21 @@ class App extends Component {
          multiple
        />
        <button onClick={this.handleUpload}>Upload</button>
-       <OwlCarousel className="owl-theme" loop margin={20} nav >
-       {this.state.uploadedImg.map(image => (
-        <div class="item">
-           <img
-             src={image.src}
-             alt={image.name}
-             style={{ height: '100px', width: '200px' }}
-           />
-          
-         </div>
-       ))}
-       </OwlCarousel>
+       {this.renderCarousel().length ? 
+        <OwlCarousel className="owl-theme" {...options} margin={4} nav onClick={()=>{console.log("Hi")}}>
+         {this.renderCarousel()}
+       </OwlCarousel> : null
+      }
+       
       
-       <div class="BarGraph" >
+       <div className="BarGraph" >
         <h2>Bar Graph</h2>
        <BarGraph/></div>
-       <div class="DoughnutGraph" >
+       <div className="DoughnutGraph" >
        <h2>Doughnut Graph</h2>
        <DoughnutGraph/></div>
        
-       <div class="LineGraph" >
+       <div className="LineGraph" >
        <h2>Line Graph</h2>
        <LineGraph/></div>
        
