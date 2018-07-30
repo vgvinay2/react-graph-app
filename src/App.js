@@ -23,15 +23,7 @@ var settings = {
   prevArrow: <SamplePrevArrow />
 };
 
-var modalSettings = {
-  infinite: true,
-  speed: 500,
-  slidesToShow: 1,
-  slidesToScroll: 1,
-  nextArrow: <SampleNextArrow />,
-  prevArrow: <SamplePrevArrow />,
-  adaptiveHeight: true
-}
+
 
 
 const BarGraph =(props) => {
@@ -62,7 +54,10 @@ const BarGraph =(props) => {
     ]
   };
   return(
+    <div style={{margin: '0 auto'}}>
     <Bar data= {data}/>
+    </div>
+    
   )
 }
 const LineGraph =(props) => {
@@ -130,7 +125,21 @@ class App extends Component {
    selectedFile: [],
    uploadedImg: [],
    show: false,
+   slideToIndex: null,
  };
+
+ modalSettings = {
+  infinite: true,
+  speed: 500,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  nextArrow: <SampleNextArrow />,
+  prevArrow: <SamplePrevArrow />,
+  adaptiveHeight: true,
+  slickGoTo:this.state.slideToIndex
+}
+
+
  handleChange = e => {
    this.setState({ selectedFile: Array.from(e.target.files) });
  };
@@ -156,7 +165,8 @@ class App extends Component {
 
  };
 
- showModal = () => {
+ showModal = (e) => {
+   e.stopPropagation()
   this.setState({ show: true });
   };
 
@@ -165,9 +175,9 @@ class App extends Component {
   };
 
  renderCarousel = (style) => {
-  return this.state.uploadedImg.map(image => {
+  return this.state.uploadedImg.map((image,index) => {
     return (
-     <div className="item"  key={image.id} onClick={this.showModal}>
+     <div className="item"  key={image.id} onClick={(e) => this.showModal(e)} >
         <img
           src={image.src}
           alt={image.name}
@@ -178,6 +188,8 @@ class App extends Component {
   })
  }
 
+
+
  componentDidMount() {
     this.setState({
       nav1: this.slider1,
@@ -186,7 +198,6 @@ class App extends Component {
   }
 
  render() {
-   console.log(this.state.uploadedImg);
    
    return (
      <div className="App">
@@ -199,14 +210,14 @@ class App extends Component {
        />
        <button onClick={this.handleUpload}>Upload</button>
        <Modal show={this.state.show} handleClose={this.hideModal} >
-       <Slider  asNavFor={this.state.nav2} ref={slider => (this.slider1 = slider)} {...modalSettings} onClick={()=>{console.log("Hi")}}>
+       <Slider  asNavFor={this.state.nav2} ref={slider => (this.slider1 = slider)} {...this.modalSettings} onClick={()=>{console.log("Hi")}}>
         
-          {this.renderCarousel({ height: '80vh', width: '80vw' })}
+          {this.renderCarousel({ height: '70vh', width: '70vw' })}
           
        </Slider>
        </Modal>
        {this.renderCarousel().length ? 
-        <div style={{margin: '0 auto', maxWidth: '800px'}}>
+        <div style={{margin: '0 auto', maxWidth: '700px'}}>
         <Slider  asNavFor={this.state.nav1} ref={slider => (this.slider2 = slider)} {...settings} onClick={()=>{console.log("Hi")}}>
          {this.renderCarousel({ height: '100px', width: '200px' })}
        </Slider>
@@ -241,7 +252,10 @@ function SampleNextArrow(props) {
     <div
       className={className}
       style={{ ...style, display: "block", background: "green" }}
-      onClick={onClick}
+      onClick={(e)=>{
+        e.stopPropagation()
+        onClick()
+      }}
     />
   );
 }
@@ -252,7 +266,10 @@ function SamplePrevArrow(props) {
     <div
       className={className}
       style={{ ...style, display: "block", background: "green" }}
-      onClick={onClick}
+      onClick={(e)=>{
+        e.stopPropagation(); 
+        onClick()
+      }}
     />
   );
 }

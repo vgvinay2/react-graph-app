@@ -24,16 +24,16 @@
   font-size: large;
 }
 .BarGraph {
-  position: absolute;
-  right: 20px;
+  margin: 0 auto;
   width: 800px !important;
 }
 .LineGraph {
-  position: absolute;
-  right: 300px;
+  margin: 0 auto;
+
   width: 800px !important;
 }
 .DoughnutGraph {
+  margin: 0 auto;
   width: 800px !important;
 }
 @keyframes App-logo-spin {
