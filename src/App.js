@@ -8,11 +8,18 @@ import {Bar} from 'react-chartjs-2';
 import {Doughnut} from 'react-chartjs-2';
 import {Line} from 'react-chartjs-2';
 import {generateId} from './utility';
+import Slider from "react-slick";
 
 const it = generateId()
 
-const options = {
-  items: 4,
+var settings = {
+  dots: true,
+  infinite: true,
+  speed: 500,
+  slidesToShow: 3,
+  slidesToScroll: 3,
+  nextArrow: <SampleNextArrow />,
+  prevArrow: <SamplePrevArrow />
 };
 
 
@@ -165,9 +172,12 @@ class App extends Component {
        />
        <button onClick={this.handleUpload}>Upload</button>
        {this.renderCarousel().length ? 
-        <OwlCarousel className="owl-theme" {...options} margin={4} nav onClick={()=>{console.log("Hi")}}>
+        <div style={{margin: '0 auto', maxWidth: '800px'}}>
+        <Slider  {...settings} onClick={()=>{console.log("Hi")}}>
          {this.renderCarousel()}
-       </OwlCarousel> : null
+       </Slider>
+        </div>
+         : null
       }
        
       
@@ -189,3 +199,26 @@ class App extends Component {
 }
 
 export default App;
+
+
+function SampleNextArrow(props) {
+  const { className, style, onClick } = props;
+  return (
+    <div
+      className={className}
+      style={{ ...style, display: "block", background: "green" }}
+      onClick={onClick}
+    />
+  );
+}
+
+function SamplePrevArrow(props) {
+  const { className, style, onClick } = props;
+  return (
+    <div
+      className={className}
+      style={{ ...style, display: "block", background: "green" }}
+      onClick={onClick}
+    />
+  );
+}
