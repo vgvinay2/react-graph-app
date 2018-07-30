@@ -9,6 +9,7 @@ import {Doughnut} from 'react-chartjs-2';
 import {Line} from 'react-chartjs-2';
 import {generateId} from './utility';
 import Slider from "react-slick";
+import Modal from './Modal'
 
 const it = generateId()
 
@@ -21,6 +22,16 @@ var settings = {
   nextArrow: <SampleNextArrow />,
   prevArrow: <SamplePrevArrow />
 };
+
+var modalSettings = {
+  infinite: true,
+  speed: 500,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  nextArrow: <SampleNextArrow />,
+  prevArrow: <SamplePrevArrow />,
+  adaptiveHeight: true
+}
 
 
 const BarGraph =(props) => {
@@ -118,6 +129,7 @@ class App extends Component {
  state = {
    selectedFile: [],
    uploadedImg: [],
+   show: false,
  };
  handleChange = e => {
    this.setState({ selectedFile: Array.from(e.target.files) });
@@ -144,19 +156,34 @@ class App extends Component {
 
  };
 
- renderCarousel = () => {
+ showModal = () => {
+  this.setState({ show: true });
+  };
+
+  hideModal = () => {
+    this.setState({ show: false });
+  };
+
+ renderCarousel = (style) => {
   return this.state.uploadedImg.map(image => {
     return (
-     <div className="item"  key={image.id}>
+     <div className="item"  key={image.id} onClick={this.showModal}>
         <img
           src={image.src}
           alt={image.name}
-          style={{ height: '100px', width: '200px' }}
+          style={style}
         />
       </div> 
     )
   })
  }
+
+ componentDidMount() {
+    this.setState({
+      nav1: this.slider1,
+      nav2: this.slider2
+    });
+  }
 
  render() {
    console.log(this.state.uploadedImg);
@@ -171,10 +198,17 @@ class App extends Component {
          multiple
        />
        <button onClick={this.handleUpload}>Upload</button>
+       <Modal show={this.state.show} handleClose={this.hideModal} >
+       <Slider  asNavFor={this.state.nav2} ref={slider => (this.slider1 = slider)} {...modalSettings} onClick={()=>{console.log("Hi")}}>
+        
+          {this.renderCarousel({ height: '80vh', width: '80vw' })}
+          
+       </Slider>
+       </Modal>
        {this.renderCarousel().length ? 
         <div style={{margin: '0 auto', maxWidth: '800px'}}>
-        <Slider  {...settings} onClick={()=>{console.log("Hi")}}>
-         {this.renderCarousel()}
+        <Slider  asNavFor={this.state.nav1} ref={slider => (this.slider2 = slider)} {...settings} onClick={()=>{console.log("Hi")}}>
+         {this.renderCarousel({ height: '100px', width: '200px' })}
        </Slider>
         </div>
          : null
@@ -222,3 +256,6 @@ function SamplePrevArrow(props) {
     />
   );
 }
+
+
+
